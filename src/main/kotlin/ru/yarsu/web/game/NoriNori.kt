@@ -3,8 +3,8 @@ package ru.yarsu.web.game
 import kotlin.random.Random
 
 class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
-    var fieldWithBlocks = List(fieldHeight) { MutableList(fieldWith) { 0 } }
-    var fieldWithBorders = List(fieldHeight) { MutableList(fieldWith) { 0 } }
+    private var fieldWithBlocks = List(fieldHeight) { MutableList(fieldWith) { 0 } }
+    private var fieldWithBorders = List(fieldHeight) { MutableList(fieldWith) { 0 } }
 
     override fun toString(): String {
         var res = ""
@@ -144,13 +144,30 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
             return fieldWithBlocks[y + 1][x] == 0 && fieldWithBlocks[y][x + 1] == 0 && fieldWithBlocks[y - 1][x] == 0
         else if (x == fieldWith - 1)
             return fieldWithBlocks[y + 1][x] == 0 && fieldWithBlocks[y][x - 1] == 0 && fieldWithBlocks[y - 1][x] == 0
-        else return fieldWithBlocks[y + 1][x] == 0 && fieldWithBlocks[y][x - 1] == 0 && fieldWithBlocks[y - 1][x] == 0 && fieldWithBlocks[y ][x + 1] == 0
+        else return fieldWithBlocks[y + 1][x] == 0 && fieldWithBlocks[y][x - 1] == 0 && fieldWithBlocks[y - 1][x] == 0 && fieldWithBlocks[y][x + 1] == 0
 //        return true
+    }
+
+    fun generateBordersFirstAlgorithm() {
+        var borderNumber = 1
+        var blocksCnt = 0
+        for (i in fieldWithBlocks.indices) {
+            for (j in fieldWithBlocks[i].indices) {
+                fieldWithBorders[i][j] = borderNumber
+                if (fieldWithBlocks[i][j] == 1) blocksCnt++
+                if (blocksCnt == 2) {
+                    blocksCnt = 0
+                    borderNumber++
+                }
+            }
+        }
+
     }
 }
 
 fun main() {
     var nori = NoriNori(8, 8)
     nori.generateBlocks()
+    nori.generateBordersFirstAlgorithm()
     println(nori)
 }
