@@ -5,7 +5,7 @@ import kotlin.random.Random
 class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
     private var fieldWithBlocks = List(fieldHeight) { MutableList(fieldWith) { 0 } }
     private var fieldWithBorders = List(fieldHeight) { MutableList(fieldWith) { 0 } }
-     var htmlPlace: String = ""
+    var htmlPlace: String = ""
 
     override fun toString(): String {
         var res = ""
@@ -153,7 +153,8 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
         var borderNumber = 1
         var blocksCnt = 0
         for (i in fieldWithBlocks.indices) {
-            for (j in fieldWithBlocks[i].indices) {
+            val indexes = if (i % 2 == 0) fieldWithBlocks[i].indices else fieldWithBlocks[i].indices.reversed()
+            for (j in indexes) {
                 fieldWithBorders[i][j] = borderNumber
                 if (fieldWithBlocks[i][j] == 1) blocksCnt++
                 if (blocksCnt == 2) {
