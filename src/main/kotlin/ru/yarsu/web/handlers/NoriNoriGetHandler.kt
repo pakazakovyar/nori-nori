@@ -5,12 +5,16 @@ import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
 import org.http4k.template.PebbleTemplates
+import ru.yarsu.web.game.GameStorage
+import ru.yarsu.web.game.NoriNori
+import ru.yarsu.web.models.NoriNoriVM
 import ru.yarsu.web.models.PebbleVM
 
-class NoriNoriGetHandler: HttpHandler {
+class NoriNoriGetHandler(private var gameStorage: GameStorage): HttpHandler {
     override fun invoke(request: Request): Response {
         val renderer = PebbleTemplates().CachingClasspath()
-        val viewModel = PebbleVM("Hello there!")
+        println(gameStorage.noriNori)
+        val viewModel = NoriNoriVM(gameStorage.noriNori!!.htmlPlace)
         val htmlDocument = renderer(viewModel)
         return Response(Status.OK).body(htmlDocument)
     }

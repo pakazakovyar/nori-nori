@@ -5,6 +5,7 @@ import kotlin.random.Random
 class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
     private var fieldWithBlocks = List(fieldHeight) { MutableList(fieldWith) { 0 } }
     private var fieldWithBorders = List(fieldHeight) { MutableList(fieldWith) { 0 } }
+     var htmlPlace: String = ""
 
     override fun toString(): String {
         var res = ""
@@ -163,6 +164,18 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
         }
 
     }
+
+    fun placeWithBordersToHtml() {
+        htmlPlace = """
+        <table border="1">
+            ${
+            fieldWithBorders.joinToString(separator = "") { row ->
+                "<tr>${row.joinToString(separator = "") { "<td>$it</td>" }}</tr>"
+            }
+        }
+        </table>
+    """.trimIndent()
+    }
 }
 
 fun main() {
@@ -170,4 +183,5 @@ fun main() {
     nori.generateBlocks()
     nori.generateBordersFirstAlgorithm()
     println(nori)
+    println(nori.placeWithBordersToHtml())
 }

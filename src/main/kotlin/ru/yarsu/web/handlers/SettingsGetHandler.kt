@@ -13,6 +13,7 @@ class SettingsGetHandler():HttpHandler {
         val renderer = PebbleTemplates().CachingClasspath()
         val viewModel = SettingsVM()
         val htmlDocument = renderer(viewModel)
+
         return Response(Status.OK).body(htmlDocument)
     }
 }

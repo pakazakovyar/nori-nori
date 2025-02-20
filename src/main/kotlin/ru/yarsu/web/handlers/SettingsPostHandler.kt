@@ -7,17 +7,21 @@ import org.http4k.core.Status
 import org.http4k.core.body.form
 import org.http4k.core.body.formAsMap
 import org.http4k.template.PebbleTemplates
+import ru.yarsu.web.game.GameStorage
 import ru.yarsu.web.game.NoriNori
 import ru.yarsu.web.models.SettingsVM
 
-class SettingsPostHandler(private var noriNori: NoriNori?):HttpHandler {
+class SettingsPostHandler(private var gameStorage: GameStorage):HttpHandler {
     override fun invoke(request: Request): Response {
+
         val fieldHeight = request.form("fieldHeight")?.toInt() ?: 2
         val fieldWidth = request.form("fieldWidth")?.toInt() ?: 2
-        noriNori = NoriNori(fieldHeight, fieldWidth)
-        val renderer = PebbleTemplates().CachingClasspath()
-        val viewModel = SettingsVM()
-        val htmlDocument = renderer(viewModel)
-        return Response(Status.OK).body(htmlDocument)
+        val noriNori = NoriNori(fieldHeight, fieldWidth)
+        noriNori.generateBlocks()
+        noriNori.generateBordersFirstAlgorithm()
+        noriNori.placeWithBordersToHtml()
+        gameStorage.setGame(noriNori)
+        println(gameStorage.noriNori)
+        return Response(Status.FOUND).header("Location", "/norinori")
     }
 }
