@@ -5,6 +5,7 @@ import kotlin.random.Random
 class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
     private var fieldWithBlocks = List(fieldHeight) { MutableList(fieldWith) { 0 } }
     private var fieldWithBorders = List(fieldHeight) { MutableList(fieldWith) { 0 } }
+    private var blocksNum = 0;
     var htmlPlace: String = ""
 
     override fun toString(): String {
@@ -32,91 +33,115 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
                     if (isValidBlock(targetX, targetY + 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY + 1][targetX] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX + 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX + 1] = 1
+                        blocksNum++
                     }
                 } else if (targetX == fieldWith - 1 && targetY == 0) {
                     if (isValidBlock(targetX, targetY + 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY + 1][targetX] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX - 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX - 1] = 1
+                        blocksNum++
                     }
                 } else if (targetX == fieldWith - 1 && targetY == fieldHeight - 1) {
                     if (isValidBlock(targetX - 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX - 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY - 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY - 1][targetX] = 1
+                        blocksNum++
                     }
                 } else if (targetX == 0 && targetY == fieldHeight - 1) {
                     if (isValidBlock(targetX + 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX + 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY - 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY - 1][targetX] = 1
+                        blocksNum++
                     }
                 } else if (targetY == 0) {
                     if (isValidBlock(targetX + 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX + 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX - 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX - 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY + 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY + 1][targetX] = 1
+                        blocksNum++
                     }
                 } else if (targetY == fieldHeight - 1) {
                     if (isValidBlock(targetX + 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX + 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX - 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX - 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY - 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY - 1][targetX] = 1
+                        blocksNum++
                     }
                 } else if (targetX == 0) {
                     if (isValidBlock(targetX + 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX + 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY + 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY + 1][targetX] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY - 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY - 1][targetX] = 1
+                        blocksNum++
                     }
                 } else if (targetX == fieldWith - 1) {
                     if (isValidBlock(targetX - 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX - 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY + 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY + 1][targetX] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY - 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY - 1][targetX] = 1
+                        blocksNum++
                     }
                 } else {
                     if (isValidBlock(targetX - 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX - 1] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY + 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY + 1][targetX] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX, targetY - 1)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY - 1][targetX] = 1
+                        blocksNum++
                     } else if (isValidBlock(targetX + 1, targetY)) {
                         fieldWithBlocks[targetY][targetX] = 1
                         fieldWithBlocks[targetY][targetX + 1] = 1
+                        blocksNum++
                     }
                 }
 
@@ -149,6 +174,9 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
 //        return true
     }
 
+
+
+
     fun generateBordersFirstAlgorithm() {
         var borderNumber = 1
         var blocksCnt = 0
@@ -157,10 +185,11 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
             for (j in indexes) {
                 fieldWithBorders[i][j] = borderNumber
                 if (fieldWithBlocks[i][j] == 1) blocksCnt++
-                if (blocksCnt == 2) {
+                if (blocksCnt == 2 && borderNumber != blocksNum) {
                     blocksCnt = 0
                     borderNumber++
                 }
+
             }
         }
 
@@ -168,21 +197,46 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
 
     fun placeWithBordersToHtml() {
         htmlPlace = """
-        <table border="1">
+        <table border="0" cellspacing="0" cellpadding="5" style="border-collapse: collapse;" id="myTable"><form method="post">
             ${
             fieldWithBorders.joinToString(separator = "") { row ->
                 "<tr>${row.joinToString(separator = "") { "<td>$it</td>" }}</tr>"
             }
         }
-        </table>
+        </form></table>
     """.trimIndent()
+    }
+
+    fun isVictory(colorMatrix: List<List<String>>): Boolean {
+        var max = 0
+        fieldWithBorders.forEach {
+            it.forEach {
+                max = Math.max(max, it)
+            }
+        }
+        val placesDict = (1..max - 1)
+            .associateWith { 0 }.toMutableMap<Int, Int>()
+        for (i in fieldWithBorders.indices) {
+            for (j in fieldWithBorders[i].indices) {
+                if (colorMatrix[i][j] == "gray") {
+                    placesDict[fieldWithBorders[i][j]] = placesDict.getOrDefault(fieldWithBorders[i][j], 0) + 1
+//                    if (!isValidBlock1(j, i, colorMatrix)) return false
+                }
+
+
+
+
+            }
+        }
+        for (value in placesDict.values) if (value != 2) return false
+        return true
     }
 }
 
-fun main() {
-    var nori = NoriNori(8, 8)
-    nori.generateBlocks()
-    nori.generateBordersFirstAlgorithm()
-    println(nori)
-    println(nori.placeWithBordersToHtml())
-}
+//    fun main() {
+//        var nori = NoriNori(8, 8)
+//        nori.generateBlocks()
+//        nori.generateBordersFirstAlgorithm()
+//        println(nori)
+//        println(nori.placeWithBordersToHtml())
+//    }
