@@ -9,24 +9,23 @@ import org.http4k.format.Jackson.auto
 import ru.yarsu.web.game.GameStorage
 
 class NoriNoriPostHandler(private val gameStorage: GameStorage): HttpHandler {
-    // Определяем модель для парсинга JSON
     data class ColorMatrixRequest(val colors: List<List<String>>)
+    data class ResultResponse(val result: String, val message: String)
 
-    // Автоматический парсер для JSON
     private val colorMatrixLens = Body.auto<ColorMatrixRequest>().toLens()
+    private val resultLens = Body.auto<ResultResponse>().toLens()
 
     override fun invoke(request: Request): Response {
-        // Парсим JSON из запроса
         val colorMatrixRequest = colorMatrixLens(request)
         val colorMatrix = colorMatrixRequest.colors
-
-        // Выводим матрицу цветов в консоль
-        println("Получена матрица цветов:")
         colorMatrix.forEach { row ->
             println(row.joinToString(" "))
         }
-        println(gameStorage.noriNori?.isVictory(colorMatrix)?: "aboba")
-        // Возвращаем успешный ответ
-        return Response(Status.OK).body("Матрица цветов получена и обработана")
+
+        return if (gameStorage.noriNori?.isVictory(colorMatrix) == true) {
+            resultLens(ResultResponse("success", "хорош"), Response(Status.OK))
+        } else {
+            resultLens(ResultResponse("fail", "плох"), Response(Status.OK))
+        }
     }
 }

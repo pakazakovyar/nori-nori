@@ -20,7 +20,6 @@ fun main() {
 
     println("Server started on http://localhost:" + server.port() + "/settings")
     println("Press enter to exit application.")
-    println(NoriNori(2, 3))
     readln()
     server.stop()
 }

@@ -11,6 +11,17 @@
         .highlight {
             background-color: gray;
         }
+        #resultMessage {
+            margin-top: 20px;
+            padding: 10px;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .fail {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -19,6 +30,7 @@
 
 <!-- Добавляем кнопку -->
 <button id="submitColors" class="btn btn-primary mt-3">Отправить цвета</button>
+<div id="resultMessage"></div>
 
 <script>
     // Логика для отрисовки границ и обработки кликов
@@ -56,6 +68,7 @@
     document.getElementById('submitColors').addEventListener('click', function() {
         const colorMatrix = [];
         const rows = table.getElementsByTagName("tr");
+        const resultMessage = document.getElementById('resultMessage');
 
         for (let i = 0; i < rows.length; i++) {
             const cells = rows[i].getElementsByTagName("td");
@@ -80,10 +93,13 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Успешно:', data);
+            resultMessage.textContent = data.message;
+            resultMessage.className = data.result === 'success' ? 'success' : 'fail';
         })
         .catch((error) => {
             console.error('Ошибка:', error);
+            resultMessage.textContent = 'Произошла ошибка';
+            resultMessage.className = 'fail';
         });
     });
 </script>

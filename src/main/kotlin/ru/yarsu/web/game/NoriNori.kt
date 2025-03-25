@@ -1,5 +1,6 @@
 package ru.yarsu.web.game
 
+import org.http4k.routing.headers
 import kotlin.random.Random
 
 class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
@@ -175,8 +176,6 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
     }
 
 
-
-
     fun generateBordersFirstAlgorithm() {
         var borderNumber = 1
         var blocksCnt = 0
@@ -224,11 +223,23 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
                 }
 
 
-
-
             }
         }
         for (value in placesDict.values) if (value != 2) return false
+        var cnt = 0
+        for (i in colorMatrix.indices) {
+            for (j in colorMatrix[i].indices) {
+                if (colorMatrix[i][j] == "gray") {
+                    if (i > 0 && colorMatrix[i - 1][j] == "gray") cnt++
+                    if (i < fieldHeight - 1 && colorMatrix[i + 1][j] == "gray") cnt++
+                    if (j > 0 && colorMatrix[i][j - 1] == "gray") cnt++
+                    if (j < fieldWith - 1 && colorMatrix[i][j + 1] == "gray") cnt++
+                    if (cnt != 1) return false
+                    cnt = 0
+                }
+            }
+        }
+
         return true
     }
 }
