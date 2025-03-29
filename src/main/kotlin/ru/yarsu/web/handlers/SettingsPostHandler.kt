@@ -18,7 +18,7 @@ class SettingsPostHandler(private var gameStorage: GameStorage):HttpHandler {
         val fieldWidth = request.form("fieldWidth")?.toInt() ?: 2
         val noriNori = NoriNori(fieldHeight, fieldWidth)
         noriNori.generateBlocks()
-        noriNori.generateBordersFirstAlgorithm()
+        noriNori.generateBordersImproved()
         noriNori.placeWithBordersToHtml()
         gameStorage.setGame(noriNori)
         println(gameStorage.noriNori)

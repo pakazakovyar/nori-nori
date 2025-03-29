@@ -49,16 +49,11 @@
         const heightValue = document.getElementById('heightValue');
         const widthValue = document.getElementById('widthValue');
 
-        // Обновление значения при изменении ползунка
         function updateValue(slider, valueSpan) {
             valueSpan.textContent = slider.value;
         }
-
-        // Добавляем обработчики событий для обоих ползунков
         heightSlider.addEventListener('input', () => updateValue(heightSlider, heightValue));
         widthSlider.addEventListener('input', () => updateValue(widthSlider, widthValue));
-
-        // Инициализируем начальные значения
         updateValue(heightSlider, heightValue);
         updateValue(widthSlider, widthValue);
     });

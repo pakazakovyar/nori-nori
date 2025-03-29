@@ -28,12 +28,11 @@
 
 {{ model.noriNori | raw }}
 
-<!-- Добавляем кнопку -->
+
 <button id="submitColors" class="btn btn-primary mt-3">Отправить цвета</button>
 <div id="resultMessage"></div>
 
 <script>
-    // Логика для отрисовки границ и обработки кликов
     const table = document.getElementById("myTable");
     const rows = table.getElementsByTagName("tr");
 
@@ -41,12 +40,9 @@
         const cells = rows[i].getElementsByTagName("td");
 
         for (let j = 0; j < cells.length; j++) {
-            // Проверка соседей справа
             if (j < cells.length - 1 && cells[j].textContent !== cells[j + 1].textContent) {
                 cells[j].style.borderRight = "1px solid black";
             }
-
-            // Проверка соседей снизу
             if (i < rows.length - 1) {
                 const cellBelow = rows[i + 1].getElementsByTagName("td")[j];
                 if (cells[j].textContent !== cellBelow.textContent) {
@@ -56,7 +52,6 @@
         }
     }
 
-    // Обработка кликов для выделения ячеек
     const cells = document.querySelectorAll('td');
     cells.forEach(cell => {
         cell.addEventListener('click', function() {
@@ -64,7 +59,6 @@
         });
     });
 
-    // Обработка нажатия кнопки
     document.getElementById('submitColors').addEventListener('click', function() {
         const colorMatrix = [];
         const rows = table.getElementsByTagName("tr");
@@ -83,7 +77,6 @@
             colorMatrix.push(rowColors);
         }
 
-        // Отправляем данные на сервер
         fetch('/norinori', {
             method: 'POST',
             headers: {
