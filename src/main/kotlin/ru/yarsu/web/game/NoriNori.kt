@@ -1,6 +1,5 @@
 package ru.yarsu.web.game
 
-import org.http4k.routing.headers
 import kotlin.random.Random
 
 class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
@@ -242,100 +241,7 @@ class NoriNori(private val fieldHeight: Int, private val fieldWith: Int) {
 
         return true
     }
-    fun generateBordersImproved() {
-        var borderNumber = 1
-        var blocksInBorder = 0
-        val visited = MutableList(fieldHeight) { MutableList(fieldWith) { false } }
 
-        // Направления движения: вверх, вправо, вниз, влево
-        val directions = listOf(-1 to 0, 0 to 1, 1 to 0, 0 to -1)
-
-        // Проходим по всем клеткам в случайном порядке
-        val cells = (0 until fieldHeight).flatMap { y ->
-            (0 until fieldWith).map { x -> y to x }
-        }.shuffled()
-
-        for ((y, x) in cells) {
-            if (!visited[y][x] && fieldWithBlocks[y][x] == 1) {
-                // Начинаем новую границу
-                var currentY = y
-                var currentX = x
-                var directionChanges = 0
-                var lastDirection = -1
-
-                while (blocksInBorder < 2 && borderNumber <= blocksNum) {
-                    if (!visited[currentY][currentX]) {
-                        visited[currentY][currentX] = true
-                        fieldWithBorders[currentY][currentX] = borderNumber
-                        blocksInBorder++
-                    }
-
-                    // Пробуем двигаться в случайном направлении, но с предпочтением текущего
-                    val possibleDirections = directions.indices.shuffled().sortedBy {
-                        if (it == lastDirection) 0 else 1
-                    }
-
-                    var moved = false
-                    for (dir in possibleDirections) {
-                        val (dy, dx) = directions[dir]
-                        val newY = currentY + dy
-                        val newX = currentX + dx
-
-                        if (newY in 0 until fieldHeight && newX in 0 until fieldWith &&
-                            !visited[newY][newX] && fieldWithBlocks[newY][newX] == 1) {
-
-                            if (dir != lastDirection) directionChanges++
-                            lastDirection = dir
-                            currentY = newY
-                            currentX = newX
-                            moved = true
-                            break
-                        }
-                    }
-
-                    // Если не смогли двигаться дальше, завершаем текущую границу
-                    if (!moved) break
-                }
-
-                borderNumber++
-                blocksInBorder = 0
-            }
-        }
-
-        // Заполняем оставшиеся клетки (не блоки) ближайшими номерами границ
-        fillEmptyCells()
-    }
-
-    fun fillEmptyCells() {
-        val queue = ArrayDeque<Pair<Int, Int>>()
-        val directions = listOf(-1 to 0, 0 to 1, 1 to 0, 0 to -1)
-
-        // Сначала добавляем все блоки в очередь
-        for (y in 0 until fieldHeight) {
-            for (x in 0 until fieldWith) {
-                if (fieldWithBorders[y][x] != 0) {
-                    queue.add(y to x)
-                }
-            }
-        }
-
-        // Распространяем номера границ на соседние клетки
-        while (queue.isNotEmpty()) {
-            val (y, x) = queue.removeFirst()
-
-            for ((dy, dx) in directions) {
-                val newY = y + dy
-                val newX = x + dx
-
-                if (newY in 0 until fieldHeight && newX in 0 until fieldWith &&
-                    fieldWithBorders[newY][newX] == 0) {
-
-                    fieldWithBorders[newY][newX] = fieldWithBorders[y][x]
-                    queue.add(newY to newX)
-                }
-            }
-        }
-    }
 
 }
 

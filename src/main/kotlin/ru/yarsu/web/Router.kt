@@ -4,7 +4,6 @@ import org.http4k.core.Method
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import ru.yarsu.web.game.GameStorage
-import ru.yarsu.web.game.NoriNori
 import ru.yarsu.web.handlers.*
 var gameStorage = GameStorage(null)
 val router = routes(

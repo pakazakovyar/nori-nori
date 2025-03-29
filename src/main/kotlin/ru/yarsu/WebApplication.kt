@@ -5,7 +5,6 @@ import org.http4k.routing.routes
 import org.http4k.routing.static
 import org.http4k.server.Netty
 import org.http4k.server.asServer
-import ru.yarsu.web.game.NoriNori
 import ru.yarsu.web.router
 
 
